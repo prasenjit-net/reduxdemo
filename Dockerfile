@@ -1,8 +1,8 @@
-FROM node:12.18-alpine as builder
-ENV NODE_ENV=production
+FROM node:latest as builder
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --silent
+COPY package*.json ./
+RUN npm install
+# RUN npm install -g parcel@nightly
 COPY . .
 RUN npm run build
 
