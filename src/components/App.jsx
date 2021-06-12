@@ -2,8 +2,8 @@ import React from "react";
 import AppNav from "./AppNav";
 import Container from "react-bootstrap/Container";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
+import Home from "../pages/Home";
+import About from "../pages/About";
 
 function App() {
   return (

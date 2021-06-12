@@ -7,7 +7,7 @@ import {
   createClearAction,
   createDepositAction,
   createWithdrawAction,
-} from "../../store/actions";
+} from "../store/actions";
 
 const DepositWithdrawForm = () => {
   const [amount, setAmount] = useState(0);
