@@ -42,6 +42,7 @@ const AppNav = () => {
                 placeholder="Username"
                 className="mr-sm-2"
                 value={username}
+                aria-label="Username"
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}

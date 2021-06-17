@@ -27,6 +27,10 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-localstorage-simple": "^2.4.1"
+    "redux-localstorage-simple": "^2.4.1",
+    "workbox-cacheable-response": "^6.1.5",
+    "workbox-expiration": "^6.1.5",
+    "workbox-routing": "^6.1.5",
+    "workbox-strategies": "^6.1.5"
   }
 }

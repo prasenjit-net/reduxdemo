@@ -1,12 +1,58 @@
 version: "3.4"
 
 services:
+  proxy:
+    image: traefik
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.network=web
+      - --entrypoints.web.address=:80
+      - --entrypoints.web-secured.address=:443
+      - --providers.file.filename=/config/dynamic.yml
+      - --certificatesresolvers.r53tls.acme.dnschallenge.provider=route53
+      - --certificatesresolvers.r53tls.acme.caserver=${ACME_URL}
+      - --certificatesresolvers.r53tls.acme.dnschallenge.delaybeforecheck=0
+      - --certificatesresolvers.r53tls.acme.email=prasenjit@prasenjit.net
+      - --certificatesresolvers.r53tls.acme.storage=/letsencrypt/acme.json
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dynamic.yml:/config/dynamic.yml
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`monitor.prasenjit.net`)"
+      - "traefik.http.routers.api.service=api@internal"
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_HOSTED_HONE_ID: ${AWS_HOSTED_HONE_ID}
+
   reduxpoc:
     image: reduxpoc
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      NODE_ENV: production
-    ports:
-      - 80:80
+      NODE_ENV: development
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.reduxpoc.rule=Host(`reduxpoc.prasenjit.net`)"
+      - "traefik.http.routers.reduxpoc.entrypoints=web"
+      - "traefik.http.routers.reduxpoc.middlewares=redirect@file"
+      - "traefik.http.routers.reduxpoc-secured.rule=Host(`reduxpoc.prasenjit.net`)"
+      - "traefik.http.routers.reduxpoc-secured.entrypoints=web-secured"
+      - "traefik.http.routers.reduxpoc-secured.tls.certResolver=r53tls"
+      - "traefik.http.services.reduxpoc.loadbalancer.server.port=80"
+
+networks:
+  web:
