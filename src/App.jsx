@@ -7,7 +7,7 @@ import About from "./pages/About";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/reduxdemo">
       <Container>
         <AppNav />
         <h1>Redux Demo Application</h1>
