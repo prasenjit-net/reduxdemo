@@ -1,0 +1,31 @@
+.board {
+  width: 40rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 2px solid blue;
+}
+
+.group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex-wrap: wrap;
+  padding: 0.3rem;
+  border: 2px solid blue;
+  border-radius: 6px;
+}
+
+.cell {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border: 2px solid green;
+  border-radius: 6px;
+  margin: 0.3rem;
+  cursor: pointer;
+
+  span {
+    display: block;
+    text-align: center;
+  }
+}

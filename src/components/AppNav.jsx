@@ -34,6 +34,9 @@ const AppNav = () => {
         <Nav className="mr-auto">
           <AppNavLink to="/about">About</AppNavLink>
         </Nav>
+        <Nav className="mr-auto">
+          <AppNavLink to="/sudocu">Sudocu</AppNavLink>
+        </Nav>
         <Form inline>
           {!loginData.authenticated && (
             <>
