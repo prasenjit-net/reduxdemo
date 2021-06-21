@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Group from "./Group";
 import style from "../../styles/sudocu.module.scss";
 import Modal from "react-bootstrap/Modal";
 import NumberMenu from "./NumberMenu";
+import { createSetCellAction } from "../../store/actions/sudoku";
 
 const Board = () => {
+  const sudoku = useSelector((state) => state.sudoku);
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [selectedCell, setSelectedCell] = useState(0);
   const closeModal = () => {
@@ -16,13 +20,21 @@ const Board = () => {
   };
   const setCellNumber = (value) => {
     setModal(false);
-    console.log("Cell number for " + selectedCell + " is " + value);
+    const group = ~~(selectedCell / 9);
+    const cell = selectedCell % 9;
+    dispatch(createSetCellAction(group + 1, cell + 1, value));
   };
   return (
     <>
       <div className={style.board}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-          <Group key={n} number={n} openModal={openModal} />
+        {["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8", "g9"].map((g, n) => (
+          <Group
+            key={n}
+            num={n}
+            name={g}
+            data={sudoku.groups[g]}
+            openModal={openModal}
+          />
         ))}
       </div>
       <Modal show={modal} onHide={closeModal}>
